@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { LearningData, WorkData, GeneratedEmail } from '@/types';
 import { generateEmail } from '@/lib/report-generator';
-import { Mail, Copy, Download, Loader2, Check } from 'lucide-react';
+import { Mail, Copy, Download, Loader as Loader2, Check, Send, FileText } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface EmailGeneratorProps {
@@ -67,20 +67,28 @@ export function EmailGenerator({ learning, work, date }: EmailGeneratorProps) {
   };
 
   return (
-    <Card className="transition-all duration-200 hover:shadow-md">
-      <CardHeader>
-        <CardTitle className="text-xl flex items-center gap-2">
-          <Mail className="h-5 w-5" />
-          Email Generator
-        </CardTitle>
-        <CardDescription>Create a professional status email from your entries</CardDescription>
+    <Card className="border border-slate-200/60 bg-white shadow-sm hover:shadow-md transition-all duration-200">
+      <CardHeader className="pb-4">
+        <div className="flex items-start gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-cyan-50 to-blue-50 border border-cyan-100">
+            <Mail className="h-5 w-5 text-cyan-600" />
+          </div>
+          <div>
+            <CardTitle className="text-lg font-semibold text-slate-900">
+              Email Generator
+            </CardTitle>
+            <CardDescription className="text-sm text-slate-500 mt-1">
+              Create a professional status email from your entries
+            </CardDescription>
+          </div>
+        </div>
       </CardHeader>
+
       <CardContent className="space-y-4">
         <Button
           onClick={handleGenerateEmail}
           disabled={isGenerating}
-          className="w-full"
-          variant="secondary"
+          className="w-full h-12 text-sm font-semibold bg-gradient-to-r from-cyan-600 to-blue-600 hover:from-cyan-700 hover:to-blue-700 shadow-sm"
         >
           {isGenerating ? (
             <>
@@ -89,7 +97,7 @@ export function EmailGenerator({ learning, work, date }: EmailGeneratorProps) {
             </>
           ) : (
             <>
-              <Mail className="mr-2 h-4 w-4" />
+              <Send className="mr-2 h-4 w-4" />
               Generate Email
             </>
           )}
@@ -99,57 +107,59 @@ export function EmailGenerator({ learning, work, date }: EmailGeneratorProps) {
           <div className="space-y-4 mt-4">
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label>Subject Line</Label>
+                <Label className="text-sm font-medium text-slate-700">Subject Line</Label>
                 <Button
                   variant="ghost"
                   size="sm"
                   onClick={handleCopySubject}
-                  className="h-8"
+                  className="h-7 text-xs"
                 >
                   {copiedSubject ? (
-                    <Check className="h-4 w-4 text-green-500" />
+                    <Check className="h-3.5 w-3.5 text-emerald-500 mr-1.5" />
                   ) : (
-                    <Copy className="h-4 w-4" />
+                    <Copy className="h-3.5 w-3.5 mr-1.5" />
                   )}
-                  <span className="ml-1">{copiedSubject ? 'Copied' : 'Copy'}</span>
+                  {copiedSubject ? 'Copied' : 'Copy'}
                 </Button>
               </div>
-              <Input value={email.subject} readOnly className="font-medium" />
+              <Input
+                value={email.subject}
+                readOnly
+                className="font-medium border-slate-200 bg-slate-50/50"
+              />
             </div>
 
             <div className="space-y-2">
               <div className="flex items-center justify-between">
-                <Label>Email Body</Label>
-                <div className="flex gap-2">
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={handleCopyEmail}
-                    className="h-8"
-                  >
-                    {copiedEmail ? (
-                      <Check className="h-4 w-4 text-green-500" />
-                    ) : (
-                      <Copy className="h-4 w-4" />
-                    )}
-                    <span className="ml-1">{copiedEmail ? 'Copied' : 'Copy'}</span>
-                  </Button>
-                </div>
+                <Label className="text-sm font-medium text-slate-700">Email Body</Label>
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  onClick={handleCopyEmail}
+                  className="h-7 text-xs"
+                >
+                  {copiedEmail ? (
+                    <Check className="h-3.5 w-3.5 text-emerald-500 mr-1.5" />
+                  ) : (
+                    <Copy className="h-3.5 w-3.5 mr-1.5" />
+                  )}
+                  {copiedEmail ? 'Copied' : 'Copy'}
+                </Button>
               </div>
               <Textarea
                 value={email.body}
                 readOnly
                 rows={12}
-                className="font-mono text-sm"
+                className="font-mono text-sm border-slate-200 bg-slate-50/50 resize-none"
               />
             </div>
 
             <Button
               onClick={handleDownloadTxt}
               variant="outline"
-              className="w-full"
+              className="w-full h-10 text-sm border-slate-200 hover:bg-slate-50"
             >
-              <Download className="mr-2 h-4 w-4" />
+              <FileText className="mr-2 h-4 w-4" />
               Download TXT
             </Button>
           </div>

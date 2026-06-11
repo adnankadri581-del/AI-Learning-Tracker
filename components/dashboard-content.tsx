@@ -17,30 +17,28 @@ import { Toaster } from '@/components/ui/toaster';
 import { Card, CardContent } from '@/components/ui/card';
 import { calculateProductivityScore } from '@/lib/calculations';
 import { Sidebar } from '@/components/sidebar';
-import { Target } from "lucide-react";
-import {
-  BookOpen,
-  Bot,
-  CheckSquare,
-  TrendingUp
-} from 'lucide-react';
-// Dynamically import AnalyticsDashboard to avoid SSR issues with recharts
+import { Clock, Wrench, CircleCheck as CheckCircle2, TrendingUp } from 'lucide-react';
+
 const AnalyticsDashboard = dynamic(
   () => import('@/components/analytics-dashboard').then((mod) => mod.AnalyticsDashboard),
   {
     ssr: false,
     loading: () => (
-      <div className="space-y-6">
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-          {[1, 2, 3, 4].map((i) => (
-            <div key={i} className="h-32 bg-muted animate-pulse rounded-lg" />
-          ))}
-        </div>
-        <div className="grid lg:grid-cols-2 gap-6">
-          <div className="h-[350px] bg-muted animate-pulse rounded-lg" />
-          <div className="h-[350px] bg-muted animate-pulse rounded-lg" />
-        </div>
-      </div>
+      <Card className="border border-slate-200/60 bg-white shadow-sm">
+        <CardContent className="p-6">
+          <div className="space-y-6">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+              {[1, 2, 3, 4].map((i) => (
+                <div key={i} className="h-24 bg-slate-100 animate-pulse rounded-lg" />
+              ))}
+            </div>
+            <div className="grid lg:grid-cols-2 gap-4">
+              <div className="h-[250px] bg-slate-100 animate-pulse rounded-lg" />
+              <div className="h-[250px] bg-slate-100 animate-pulse rounded-lg" />
+            </div>
+          </div>
+        </CardContent>
+      </Card>
     )
   }
 );
@@ -95,19 +93,15 @@ export function DashboardContent() {
   const [isSaving, setIsSaving] = useState(false);
   const [lastSaved, setLastSaved] = useState<Date | null>(null);
 
-  // Ensure we have valid data objects with defaults
   const safeLearningData: LearningData = learningData || defaultLearningData;
   const safeWorkData: WorkData = workData || defaultWorkData;
   const safeWeeklyData: WeeklyData[] = weeklyData || defaultWeeklyData;
-  const productivityScore = calculateProductivityScore(
-    safeLearningData,
-    safeWorkData
-  );
+  const productivityScore = calculateProductivityScore(safeLearningData, safeWorkData);
 
   const tasksCount = safeWorkData.tasksCompleted
     ? safeWorkData.tasksCompleted.split('\n').filter(Boolean).length
     : 0;
-  // Initialize lastSaved from localStorage
+
   useEffect(() => {
     try {
       const stored = localStorage.getItem('ai-tracker-last-saved');
@@ -119,7 +113,6 @@ export function DashboardContent() {
     }
   }, []);
 
-  // Auto-save with debounce
   const saveData = useCallback(() => {
     setIsSaving(true);
     setTimeout(() => {
@@ -134,7 +127,6 @@ export function DashboardContent() {
     }, 300);
   }, []);
 
-  // Handle learning data change
   const handleLearningChange = useCallback(
     (data: LearningData) => {
       setLearningData(data);
@@ -143,7 +135,6 @@ export function DashboardContent() {
     [setLearningData, saveData]
   );
 
-  // Handle work data change
   const handleWorkChange = useCallback(
     (data: WorkData) => {
       setWorkData(data);
@@ -152,7 +143,6 @@ export function DashboardContent() {
     [setWorkData, saveData]
   );
 
-  // Show welcome toast on first load
   useEffect(() => {
     try {
       const hasSeenWelcome = localStorage.getItem('ai-tracker-welcomed');
@@ -173,10 +163,10 @@ export function DashboardContent() {
 
   if (learningLoading || workLoading || weeklyLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" />
-          <p className="text-sm text-muted-foreground">
+          <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-blue-500" />
+          <p className="text-sm text-slate-500">
             Loading your data...
           </p>
         </div>
@@ -184,150 +174,92 @@ export function DashboardContent() {
     );
   }
 
+  const statCards = [
+    {
+      label: 'Learning Hours',
+      value: safeLearningData.learningHours,
+      subtitle: 'Today',
+      icon: Clock,
+      gradient: 'from-blue-500 to-indigo-500',
+      bgGradient: 'from-blue-50 to-indigo-50',
+      borderColor: 'border-blue-100',
+    },
+    {
+      label: 'AI Tools',
+      value: safeLearningData.aiToolsExplored.length,
+      subtitle: 'Tools explored',
+      icon: Wrench,
+      gradient: 'from-emerald-500 to-teal-500',
+      bgGradient: 'from-emerald-50 to-green-50',
+      borderColor: 'border-emerald-100',
+    },
+    {
+      label: 'Tasks Completed',
+      value: tasksCount,
+      subtitle: 'Today',
+      icon: CheckCircle2,
+      gradient: 'from-violet-500 to-purple-500',
+      bgGradient: 'from-violet-50 to-purple-50',
+      borderColor: 'border-violet-100',
+    },
+    {
+      label: 'Productivity Score',
+      value: `${productivityScore}%`,
+      subtitle: productivityScore >= 80 ? 'Excellent' : productivityScore >= 60 ? 'Good' : 'Needs focus',
+      icon: TrendingUp,
+      gradient: productivityScore >= 80 ? 'from-emerald-500 to-green-500' : productivityScore >= 60 ? 'from-amber-500 to-orange-500' : 'from-slate-400 to-slate-500',
+      bgGradient: productivityScore >= 80 ? 'from-emerald-50 to-green-50' : productivityScore >= 60 ? 'from-amber-50 to-orange-50' : 'from-slate-50 to-gray-50',
+      borderColor: productivityScore >= 80 ? 'border-emerald-100' : productivityScore >= 60 ? 'border-amber-100' : 'border-slate-200',
+    },
+  ];
+
   return (
-    <div className="min-h-screen flex bg-gradient-to-br from-slate-50 via-white to-violet-50">
-      <Sidebar />
-      <div className="flex-1">
+    <div className="min-h-screen bg-slate-50/50">
+      <div className="hidden lg:block">
+        <Sidebar />
+      </div>
+      <div className="lg:pl-64">
         <Header />
-        <main className="relative max-w-[1500px] mx-auto px-6 py-8">
-          {/* Auto-save indicator */}
-          <div className="flex justify-end mb-4 relative">
+        <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
+          <div className="flex justify-end mb-4">
             <AutoSaveIndicator isSaving={isSaving} lastSaved={lastSaved} />
           </div>
-<div className="relative grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6 mb-8">
 
-  <div className="absolute top-0 left-1/3 h-72 w-72 rounded-full bg-violet-500/5 blur-[120px]" />
-  <div className="absolute top-20 right-20 h-72 w-72 rounded-full bg-indigo-500/5 blur-[120px]" />
-
-  {/* Learning Hours */}
-  <Card className="group rounded-[36px] bg-white/90 backdrop-blur-xl border border-white shadow-[0_15px_50px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_60px_rgba(15,23,42,0.10)] hover:-translate-y-2 transition-all duration-300">
-    <CardContent className="p-7">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-muted-foreground">
-            Learning Hours
-          </p>
-
-          <h2 className="text-5xl font-black tracking-tight mt-2">
-            {safeLearningData.learningHours}
-          </h2>
-
-          <p className="text-xs text-green-600 mt-2">
-            Today
-          </p>
-        </div>
-
-<div className="h-16 w-16 rounded-3xl bg-gradient-to-br from-violet-500 to-indigo-600 text-white flex items-center justify-center shadow-lg">
-  📖
-</div>
-      </div>
-    </CardContent>
-  </Card>
-
-  {/* AI Tools */}
-  <Card className="group rounded-[36px] bg-white/90 backdrop-blur-xl border border-white shadow-[0_15px_50px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_60px_rgba(15,23,42,0.10)] hover:-translate-y-2 transition-all duration-300">
-    <CardContent className="p-7">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-muted-foreground">
-            AI Tools
-          </p>
-
-          <h2 className="text-5xl font-black tracking-tight mt-2">
-            {safeLearningData.aiToolsExplored.length}
-          </h2>
-
-          <p className="text-xs text-green-600 mt-2">
-            Tools explored
-          </p>
-        </div>
-
-<div className="h-16 w-16 rounded-3xl bg-gradient-to-br from-emerald-500 to-green-600 text-white flex items-center justify-center shadow-lg">
-  🤖
-</div>
-      </div>
-    </CardContent>
-  </Card>
-
-  {/* Tasks */}
-  <Card className="group rounded-[36px] bg-white/90 backdrop-blur-xl border border-white shadow-[0_15px_50px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_60px_rgba(15,23,42,0.10)] hover:-translate-y-2 transition-all duration-300">
-    <CardContent className="p-7">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-muted-foreground">
-            Tasks Completed
-          </p>
-
-          <h2 className="text-5xl font-black tracking-tight mt-2">
-            {tasksCount}
-          </h2>
-
-          <p className="text-xs text-blue-600 mt-2">
-            Today
-          </p>
-        </div>
-
-<div className="h-16 w-16 rounded-3xl bg-gradient-to-br from-sky-500 to-blue-600 text-white flex items-center justify-center shadow-lg">
-  ✅
-</div>
-      </div>
-    </CardContent>
-  </Card>
-
-  {/* Productivity */}
-  <Card className="group rounded-[36px] bg-white/90 backdrop-blur-xl border border-white shadow-[0_15px_50px_rgba(15,23,42,0.06)] hover:shadow-[0_25px_60px_rgba(15,23,42,0.10)] hover:-translate-y-2 transition-all duration-300">
-    <CardContent className="p-7">
-      <div className="flex items-center justify-between">
-        <div>
-          <p className="text-sm text-muted-foreground">
-            Productivity Score
-          </p>
-
-          <h2 className="text-5xl font-black tracking-tight mt-2 text-amber-500">
-            {productivityScore}%
-          </h2>
-
-          {productivityScore >= 80 ? (
-            <p className="text-xs text-green-600 mt-2">Excellent</p>
-          ) : productivityScore >= 60 ? (
-            <p className="text-xs text-yellow-600 mt-2">Good Progress</p>
-          ) : (
-            <p className="text-xs text-red-600 mt-2">Needs Improvement</p>
-          )}
-
-          <div className="mt-4 w-40">
-            <div className="h-3 rounded-full bg-slate-100 overflow-hidden">
-              <div
-                className="h-full rounded-full bg-gradient-to-r from-amber-400 to-orange-500"
-                style={{ width: `${productivityScore}%` }}
-              />
-            </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
+            {statCards.map((stat) => (
+              <Card
+                key={stat.label}
+                className={`relative overflow-hidden border ${stat.borderColor} bg-gradient-to-br ${stat.bgGradient} shadow-sm hover:shadow-md transition-all duration-200`}
+              >
+                <CardContent className="p-4 sm:p-5">
+                  <div className="flex items-start justify-between">
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs sm:text-sm font-medium text-slate-600 truncate">
+                        {stat.label}
+                      </p>
+                      <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
+                        {stat.value}
+                      </p>
+                      <p className="text-xs text-slate-500 mt-1">{stat.subtitle}</p>
+                    </div>
+                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${stat.gradient} shadow-sm`}>
+                      <stat.icon className="h-5 w-5 text-white" />
+                    </div>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
           </div>
-        </div>
 
-<div className="h-16 w-16 rounded-3xl bg-gradient-to-br from-orange-400 to-orange-600 text-white flex items-center justify-center shadow-lg">
-  📈
-</div>
-      </div>
-    </CardContent>
-  </Card>
-
-</div>
-
-          {/* Manager Summary - Top highlight */}
           <div className="mb-6">
             <ManagerSummary learning={safeLearningData} work={safeWorkData} date={today} />
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-6 mb-6">
-            {/* Daily Learning Tracker */}
+          <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
             <DailyLearningTracker data={safeLearningData} onChange={handleLearningChange} />
-
-            {/* Daily Work Status */}
             <DailyWorkStatus data={safeWorkData} onChange={handleWorkChange} />
           </div>
 
-          {/* Analytics Dashboard */}
           <div className="mb-6">
             <AnalyticsDashboard
               learning={safeLearningData}
@@ -336,13 +268,11 @@ export function DashboardContent() {
             />
           </div>
 
-          {/* Report and Email Generators */}
-          <div className="grid lg:grid-cols-2 gap-6 mb-6">
+          <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
             <ReportGenerator learning={safeLearningData} work={safeWorkData} date={today} />
             <EmailGenerator learning={safeLearningData} work={safeWorkData} date={today} />
           </div>
 
-          {/* Export Features */}
           <ExportFeatures learning={safeLearningData} work={safeWorkData} date={today} />
         </main>
       </div>

@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
-import { LearningData, WorkData, GeneratedReport } from '@/types';
+import { LearningData, WorkData } from '@/types';
 import { generateReport } from '@/lib/report-generator';
-import { FileDown, Printer, FileText, Loader2 } from 'lucide-react';
+import { FileDown, Printer, FileText, Loader as Loader2, Download, FileSpreadsheet } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
 
@@ -27,13 +27,11 @@ export function ExportFeatures({ learning, work, date }: ExportFeaturesProps) {
     const maxWidth = pageWidth - 2 * margin;
     let y = 20;
 
-    // Title
     doc.setFontSize(20);
     doc.setTextColor(0, 0, 0);
     doc.text('Daily Status Report', margin, y);
     y += 10;
 
-    // Date
     doc.setFontSize(12);
     doc.setTextColor(100, 100, 100);
     doc.text(new Date(date).toLocaleDateString('en-US', {
@@ -44,90 +42,30 @@ export function ExportFeatures({ learning, work, date }: ExportFeaturesProps) {
     }), margin, y);
     y += 15;
 
-    // Executive Summary
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    doc.text('Executive Summary', margin, y);
-    y += 8;
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
-    const execLines = doc.splitTextToSize(report.executiveSummary, maxWidth);
-    doc.text(execLines, margin, y);
-    y += execLines.length * 5 + 10;
+    const sections = [
+      { title: 'Executive Summary', content: report.executiveSummary },
+      { title: 'AI Learning Summary', content: report.aiLearningSummary },
+      { title: 'Work Accomplishments', content: report.workAccomplishments },
+      { title: 'Challenges', content: report.challenges },
+      { title: "Tomorrow's Plan", content: report.tomorrowPlan },
+      { title: 'Recommendations', content: report.recommendations },
+    ];
 
-    // AI Learning Summary
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    doc.text('AI Learning Summary', margin, y);
-    y += 8;
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
-    const learningLines = doc.splitTextToSize(report.aiLearningSummary, maxWidth);
-    if (y + learningLines.length * 5 > 270) {
-      doc.addPage();
-      y = 20;
-    }
-    doc.text(learningLines, margin, y);
-    y += learningLines.length * 5 + 10;
-
-    // Work Accomplishments
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    doc.text('Work Accomplishments', margin, y);
-    y += 8;
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
-    const workLines = doc.splitTextToSize(report.workAccomplishments, maxWidth);
-    if (y + workLines.length * 5 > 270) {
-      doc.addPage();
-      y = 20;
-    }
-    doc.text(workLines, margin, y);
-    y += workLines.length * 5 + 10;
-
-    // Challenges
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    doc.text('Challenges', margin, y);
-    y += 8;
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
-    const challengeLines = doc.splitTextToSize(report.challenges, maxWidth);
-    if (y + challengeLines.length * 5 > 270) {
-      doc.addPage();
-      y = 20;
-    }
-    doc.text(challengeLines, margin, y);
-    y += challengeLines.length * 5 + 10;
-
-    // Tomorrow's Plan
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    doc.text("Tomorrow's Plan", margin, y);
-    y += 8;
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
-    const planLines = doc.splitTextToSize(report.tomorrowPlan, maxWidth);
-    if (y + planLines.length * 5 > 270) {
-      doc.addPage();
-      y = 20;
-    }
-    doc.text(planLines, margin, y);
-    y += planLines.length * 5 + 10;
-
-    // Recommendations
-    doc.setFontSize(14);
-    doc.setTextColor(0, 0, 0);
-    doc.text('Recommendations', margin, y);
-    y += 8;
-    doc.setFontSize(10);
-    doc.setTextColor(50, 50, 50);
-    const recLines = doc.splitTextToSize(report.recommendations, maxWidth);
-    if (y + recLines.length * 5 > 270) {
-      doc.addPage();
-      y = 20;
-    }
-    doc.text(recLines, margin, y);
+    sections.forEach((section) => {
+      doc.setFontSize(14);
+      doc.setTextColor(0, 0, 0);
+      doc.text(section.title, margin, y);
+      y += 8;
+      doc.setFontSize(10);
+      doc.setTextColor(50, 50, 50);
+      const lines = doc.splitTextToSize(section.content, maxWidth);
+      if (y + lines.length * 5 > 270) {
+        doc.addPage();
+        y = 20;
+      }
+      doc.text(lines, margin, y);
+      y += lines.length * 5 + 10;
+    });
 
     return doc;
   };
@@ -265,58 +203,77 @@ Generated on: ${new Date().toLocaleString()}
     setIsExporting(null);
   };
 
+  const exportOptions = [
+    {
+      id: 'pdf',
+      label: 'Export PDF',
+      description: 'Professional document format',
+      icon: FileDown,
+      gradient: 'from-rose-500 to-pink-500',
+      onClick: handleExportPdf,
+    },
+    {
+      id: 'txt',
+      label: 'Export TXT',
+      description: 'Plain text format',
+      icon: FileText,
+      gradient: 'from-blue-500 to-cyan-500',
+      onClick: handleExportTxt,
+    },
+    {
+      id: 'print',
+      label: 'Print Report',
+      description: 'Open print dialog',
+      icon: Printer,
+      gradient: 'from-emerald-500 to-teal-500',
+      onClick: handlePrint,
+    },
+  ];
+
   return (
-    <Card className="transition-all duration-200 hover:shadow-md">
-      <CardHeader>
-        <CardTitle className="text-xl flex items-center gap-2">
-          <FileDown className="h-5 w-5" />
-          Export Features
-        </CardTitle>
-        <CardDescription>Download or print your daily report</CardDescription>
+    <Card className="border border-slate-200/60 bg-white shadow-sm hover:shadow-md transition-all duration-200">
+      <CardHeader className="pb-4">
+        <div className="flex items-start gap-3">
+          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-slate-100 to-gray-100 border border-slate-200">
+            <Download className="h-5 w-5 text-slate-600" />
+          </div>
+          <div>
+            <CardTitle className="text-lg font-semibold text-slate-900">
+              Export Features
+            </CardTitle>
+            <CardDescription className="text-sm text-slate-500 mt-1">
+              Download or print your daily report
+            </CardDescription>
+          </div>
+        </div>
       </CardHeader>
+
       <CardContent>
-        <div className="grid sm:grid-cols-3 gap-3">
-          <Button
-            onClick={handleExportPdf}
-            disabled={isExporting !== null}
-            variant="default"
-            className="h-12"
-          >
-            {isExporting === 'pdf' ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <FileDown className="mr-2 h-4 w-4" />
-            )}
-            Export PDF
-          </Button>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          {exportOptions.map((option) => {
+            const Icon = option.icon;
+            const isLoading = isExporting === option.id;
+            const isDisabled = isExporting !== null;
 
-          <Button
-            onClick={handleExportTxt}
-            disabled={isExporting !== null}
-            variant="secondary"
-            className="h-12"
-          >
-            {isExporting === 'txt' ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <FileText className="mr-2 h-4 w-4" />
-            )}
-            Export TXT
-          </Button>
-
-          <Button
-            onClick={handlePrint}
-            disabled={isExporting !== null}
-            variant="outline"
-            className="h-12"
-          >
-            {isExporting === 'print' ? (
-              <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-            ) : (
-              <Printer className="mr-2 h-4 w-4" />
-            )}
-            Print Report
-          </Button>
+            return (
+              <button
+                key={option.id}
+                onClick={option.onClick}
+                disabled={isDisabled}
+                className="group relative flex flex-col items-start p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-left w-full"
+              >
+                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${option.gradient} shadow-sm mb-3`}>
+                  {isLoading ? (
+                    <Loader2 className="h-4 w-4 text-white animate-spin" />
+                  ) : (
+                    <Icon className="h-4 w-4 text-white" />
+                  )}
+                </div>
+                <span className="text-sm font-medium text-slate-900">{option.label}</span>
+                <span className="text-xs text-slate-500 mt-0.5">{option.description}</span>
+              </button>
+            );
+          })}
         </div>
       </CardContent>
     </Card>
