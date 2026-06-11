@@ -17,7 +17,7 @@ import { Toaster } from '@/components/ui/toaster';
 import { Card, CardContent } from '@/components/ui/card';
 import { calculateProductivityScore } from '@/lib/calculations';
 import { Sidebar } from '@/components/sidebar';
-import { Clock, Wrench, CircleCheck as CheckCircle2, TrendingUp } from 'lucide-react';
+import { Clock, Wrench, CircleCheck as CheckCircle2, TrendingUp, TrendingDown, Minus, Sparkles } from 'lucide-react';
 
 const AnalyticsDashboard = dynamic(
   () => import('@/components/analytics-dashboard').then((mod) => mod.AnalyticsDashboard),
@@ -163,12 +163,16 @@ export function DashboardContent() {
 
   if (learningLoading || workLoading || weeklyLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50">
         <div className="flex flex-col items-center gap-4">
-          <div className="h-8 w-8 animate-spin rounded-full border-2 border-slate-200 border-t-blue-500" />
-          <p className="text-sm text-slate-500">
-            Loading your data...
-          </p>
+          <div className="relative">
+            <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-blue-500" />
+            <div className="absolute inset-0 h-12 w-12 animate-ping rounded-full bg-blue-500/20" />
+          </div>
+          <div className="text-center">
+            <p className="text-sm font-medium text-slate-700">Loading your workspace</p>
+            <p className="text-xs text-slate-500 mt-0.5">Preparing your dashboard...</p>
+          </div>
         </div>
       </div>
     );
@@ -178,89 +182,173 @@ export function DashboardContent() {
     {
       label: 'Learning Hours',
       value: safeLearningData.learningHours,
-      subtitle: 'Today',
+      subtitle: 'Hours invested today',
       icon: Clock,
-      gradient: 'from-blue-500 to-indigo-500',
-      bgGradient: 'from-blue-50 to-indigo-50',
-      borderColor: 'border-blue-100',
+      gradient: 'bg-gradient-to-br from-blue-500 to-blue-600',
+      iconBg: 'bg-gradient-to-br from-blue-500/10 to-indigo-500/10',
+      iconColor: 'text-blue-500',
+      trend: safeLearningData.learningHours >= 2 ? 'up' : safeLearningData.learningHours >= 1 ? 'neutral' : 'down',
+      trendValue: safeLearningData.learningHours >= 2 ? 'On track' : safeLearningData.learningHours >= 1 ? 'In progress' : 'Start learning',
     },
     {
-      label: 'AI Tools',
+      label: 'AI Tools Explored',
       value: safeLearningData.aiToolsExplored.length,
-      subtitle: 'Tools explored',
+      subtitle: 'Tools discovered',
       icon: Wrench,
-      gradient: 'from-emerald-500 to-teal-500',
-      bgGradient: 'from-emerald-50 to-green-50',
-      borderColor: 'border-emerald-100',
+      gradient: 'bg-gradient-to-br from-emerald-500 to-teal-600',
+      iconBg: 'bg-gradient-to-br from-emerald-500/10 to-teal-500/10',
+      iconColor: 'text-emerald-500',
+      trend: safeLearningData.aiToolsExplored.length >= 3 ? 'up' : safeLearningData.aiToolsExplored.length >= 1 ? 'neutral' : 'down',
+      trendValue: safeLearningData.aiToolsExplored.length >= 3 ? 'Great progress' : safeLearningData.aiToolsExplored.length >= 1 ? 'Keep going' : 'Explore tools',
     },
     {
       label: 'Tasks Completed',
       value: tasksCount,
-      subtitle: 'Today',
+      subtitle: 'Tasks this session',
       icon: CheckCircle2,
-      gradient: 'from-violet-500 to-purple-500',
-      bgGradient: 'from-violet-50 to-purple-50',
-      borderColor: 'border-violet-100',
+      gradient: 'bg-gradient-to-br from-amber-500 to-orange-600',
+      iconBg: 'bg-gradient-to-br from-amber-500/10 to-orange-500/10',
+      iconColor: 'text-amber-500',
+      trend: tasksCount >= 5 ? 'up' : tasksCount >= 2 ? 'neutral' : 'down',
+      trendValue: tasksCount >= 5 ? 'Excellent' : tasksCount >= 2 ? 'Good work' : 'Focus on tasks',
     },
     {
       label: 'Productivity Score',
       value: `${productivityScore}%`,
-      subtitle: productivityScore >= 80 ? 'Excellent' : productivityScore >= 60 ? 'Good' : 'Needs focus',
-      icon: TrendingUp,
-      gradient: productivityScore >= 80 ? 'from-emerald-500 to-green-500' : productivityScore >= 60 ? 'from-amber-500 to-orange-500' : 'from-slate-400 to-slate-500',
-      bgGradient: productivityScore >= 80 ? 'from-emerald-50 to-green-50' : productivityScore >= 60 ? 'from-amber-50 to-orange-50' : 'from-slate-50 to-gray-50',
-      borderColor: productivityScore >= 80 ? 'border-emerald-100' : productivityScore >= 60 ? 'border-amber-100' : 'border-slate-200',
+      subtitle: productivityScore >= 80 ? 'Outstanding' : productivityScore >= 60 ? 'Meeting goals' : productivityScore >= 40 ? 'Room to grow' : 'Needs attention',
+      icon: productivityScore >= 80 ? Sparkles : TrendingUp,
+      gradient: productivityScore >= 80
+        ? 'bg-gradient-to-br from-emerald-500 to-green-600'
+        : productivityScore >= 60
+        ? 'bg-gradient-to-br from-blue-500 to-indigo-600'
+        : productivityScore >= 40
+        ? 'bg-gradient-to-br from-amber-500 to-orange-600'
+        : 'bg-gradient-to-br from-slate-400 to-slate-500',
+      iconBg: productivityScore >= 80
+        ? 'bg-gradient-to-br from-emerald-500/10 to-green-500/10'
+        : productivityScore >= 60
+        ? 'bg-gradient-to-br from-blue-500/10 to-indigo-500/10'
+        : productivityScore >= 40
+        ? 'bg-gradient-to-br from-amber-500/10 to-orange-500/10'
+        : 'bg-gradient-to-br from-slate-400/10 to-slate-500/10',
+      iconColor: productivityScore >= 80
+        ? 'text-emerald-500'
+        : productivityScore >= 60
+        ? 'text-blue-500'
+        : productivityScore >= 40
+        ? 'text-amber-500'
+        : 'text-slate-400',
+      trend: productivityScore >= 80 ? 'up' : productivityScore >= 60 ? 'neutral' : 'down',
+      trendValue: productivityScore >= 80 ? 'Top performer' : productivityScore >= 60 ? 'On track' : 'Improve score',
+      isScore: true,
+      scoreValue: productivityScore,
     },
   ];
 
+  const getTrendIcon = (trend: string) => {
+    switch (trend) {
+      case 'up':
+        return <TrendingUp className="h-3 w-3" />;
+      case 'down':
+        return <TrendingDown className="h-3 w-3" />;
+      default:
+        return <Minus className="h-3 w-3" />;
+    }
+  };
+
+  const getTrendColor = (trend: string) => {
+    switch (trend) {
+      case 'up':
+        return 'text-emerald-600 bg-emerald-50';
+      case 'down':
+        return 'text-rose-600 bg-rose-50';
+      default:
+        return 'text-slate-600 bg-slate-100';
+    }
+  };
+
   return (
-    <div className="min-h-screen bg-slate-50/50">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-50/80 to-blue-50/20">
       <div className="hidden lg:block">
         <Sidebar />
       </div>
       <div className="lg:pl-64">
         <Header />
         <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-          <div className="flex justify-end mb-4">
+          {/* Status Bar */}
+          <div className="flex items-center justify-between mb-6">
+            <div className="flex items-center gap-2">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/50">
+                <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                <span className="text-xs font-medium text-emerald-700">All systems operational</span>
+              </div>
+            </div>
             <AutoSaveIndicator isSaving={isSaving} lastSaved={lastSaved} />
           </div>
 
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mb-6">
-            {statCards.map((stat) => (
+          {/* Premium KPI Cards */}
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5 mb-8">
+            {statCards.map((stat, index) => (
               <Card
                 key={stat.label}
-                className={`relative overflow-hidden border ${stat.borderColor} bg-gradient-to-br ${stat.bgGradient} shadow-sm hover:shadow-md transition-all duration-200`}
+                className={`group relative overflow-hidden bg-white border border-slate-200/60 shadow-sm hover:shadow-lg hover:border-slate-300/80 transition-all duration-300 ${stat.isScore ? 'stat-glow' : ''}`}
+                style={{ animationDelay: `${index * 50}ms` }}
               >
-                <CardContent className="p-4 sm:p-5">
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1 min-w-0">
-                      <p className="text-xs sm:text-sm font-medium text-slate-600 truncate">
-                        {stat.label}
-                      </p>
-                      <p className="text-2xl sm:text-3xl font-bold text-slate-900 mt-1">
-                        {stat.value}
-                      </p>
-                      <p className="text-xs text-slate-500 mt-1">{stat.subtitle}</p>
+                <CardContent className="p-5 sm:p-6">
+                  <div className="flex items-start justify-between mb-4">
+                    <div className={`flex h-12 w-12 items-center justify-center rounded-xl ${stat.iconBg} transition-transform duration-300 group-hover:scale-105`}>
+                      <stat.icon className={`h-6 w-6 ${stat.iconColor}`} />
                     </div>
-                    <div className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${stat.gradient} shadow-sm`}>
-                      <stat.icon className="h-5 w-5 text-white" />
+                    <div className={`flex items-center gap-1 px-2 py-1 rounded-full text-xs font-medium ${getTrendColor(stat.trend)}`}>
+                      {getTrendIcon(stat.trend)}
+                      <span className="hidden sm:inline">{stat.trendValue}</span>
                     </div>
                   </div>
+
+                  <div className="space-y-1">
+                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                      {stat.label}
+                    </p>
+                    <div className="flex items-baseline gap-1">
+                      <p className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+                        {stat.value}
+                      </p>
+                    </div>
+                    <p className="text-xs text-slate-500">{stat.subtitle}</p>
+                  </div>
+
+                  {/* Score Progress Bar */}
+                  {stat.isScore && (
+                    <div className="mt-4 space-y-2">
+                      <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                        <div
+                          className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-700 ease-out"
+                          style={{ width: `${stat.scoreValue}%` }}
+                        />
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Decorative gradient */}
+                  <div className="absolute -bottom-4 -right-4 h-20 w-20 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </CardContent>
               </Card>
             ))}
           </div>
 
-          <div className="mb-6">
+          {/* Manager Summary - Featured Section */}
+          <div className="mb-8">
             <ManagerSummary learning={safeLearningData} work={safeWorkData} date={today} />
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
+          {/* Learning & Work Trackers */}
+          <div className="grid lg:grid-cols-2 gap-6 mb-8">
             <DailyLearningTracker data={safeLearningData} onChange={handleLearningChange} />
             <DailyWorkStatus data={safeWorkData} onChange={handleWorkChange} />
           </div>
 
-          <div className="mb-6">
+          {/* Analytics Dashboard */}
+          <div className="mb-8">
             <AnalyticsDashboard
               learning={safeLearningData}
               work={safeWorkData}
@@ -268,13 +356,25 @@ export function DashboardContent() {
             />
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-4 sm:gap-6 mb-6">
+          {/* Report & Email Generation */}
+          <div className="grid lg:grid-cols-2 gap-6 mb-8">
             <ReportGenerator learning={safeLearningData} work={safeWorkData} date={today} />
             <EmailGenerator learning={safeLearningData} work={safeWorkData} date={today} />
           </div>
 
+          {/* Export Features */}
           <ExportFeatures learning={safeLearningData} work={safeWorkData} date={today} />
         </main>
+
+        {/* Footer */}
+        <footer className="border-t border-slate-200/60 bg-white/50 backdrop-blur-sm py-6 mt-8">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+              <p>AI Learning Tracker - Enterprise Dashboard</p>
+              <p>Secure, real-time data synchronization</p>
+            </div>
+          </div>
+        </footer>
       </div>
 
       <Toaster />

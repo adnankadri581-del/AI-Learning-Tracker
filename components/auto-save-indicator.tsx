@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Check, Loader as Loader2, Cloud } from 'lucide-react';
+import { Check, Loader as Loader2, Cloud, ShieldCheck } from 'lucide-react';
 
 interface AutoSaveIndicatorProps {
   isSaving: boolean;
@@ -37,28 +37,28 @@ export function AutoSaveIndicator({ isSaving, lastSaved }: AutoSaveIndicatorProp
 
   if (isSaving) {
     return (
-      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500">
-        <Loader2 className="h-3 w-3 animate-spin text-blue-500" />
-        <span>Saving...</span>
+      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-blue-50 border border-blue-200/50">
+        <Loader2 className="h-3.5 w-3.5 animate-spin text-blue-500" />
+        <span className="text-xs font-medium text-blue-700">Saving...</span>
       </div>
     );
   }
 
   if (lastSaved) {
     return (
-      <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-500">
-        <div className="flex items-center justify-center h-4 w-4 rounded-full bg-emerald-100">
-          <Check className="h-2.5 w-2.5 text-emerald-600" />
+      <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-200/50">
+        <div className="flex items-center justify-center h-4 w-4 rounded-full bg-gradient-to-br from-emerald-500 to-teal-500">
+          <Check className="h-2.5 w-2.5 text-white" />
         </div>
-        <span>Auto-saved {timeAgo}</span>
+        <span className="text-xs font-medium text-emerald-700">Saved {timeAgo}</span>
       </div>
     );
   }
 
   return (
-    <div className="flex items-center gap-1.5 text-xs sm:text-sm text-slate-400">
-      <Cloud className="h-3 w-3" />
-      <span>Ready</span>
+    <div className="flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-50 border border-slate-200/50">
+      <ShieldCheck className="h-3.5 w-3.5 text-slate-400" />
+      <span className="text-xs font-medium text-slate-500">Auto-save ready</span>
     </div>
   );
 }

@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { LearningData, WorkData } from '@/types';
 import { generateReport } from '@/lib/report-generator';
-import { FileDown, Printer, FileText, Loader as Loader2, Download } from 'lucide-react';
+import { FileDown, Printer, FileText, Loader as Loader2, Download, ArrowRight, Check, Share2, FileCheck } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
 
@@ -17,6 +17,7 @@ interface ExportFeaturesProps {
 
 export function ExportFeatures({ learning, work, date }: ExportFeaturesProps) {
   const [isExporting, setIsExporting] = useState<string | null>(null);
+  const [exportedType, setExportedType] = useState<string | null>(null);
 
   const report = generateReport(learning, work, date);
 
@@ -75,6 +76,7 @@ export function ExportFeatures({ learning, work, date }: ExportFeaturesProps) {
     try {
       const doc = generatePdfContent();
       doc.save(`daily-report-${date}.pdf`);
+      setExportedType('pdf');
       toast({ title: 'PDF exported successfully' });
     } catch (error) {
       toast({ title: 'Failed to export PDF', variant: 'destructive' });
@@ -130,6 +132,7 @@ Generated on: ${new Date().toLocaleString()}
       a.click();
       document.body.removeChild(a);
       URL.revokeObjectURL(url);
+      setExportedType('txt');
       toast({ title: 'TXT exported successfully' });
     } catch (error) {
       toast({ title: 'Failed to export TXT', variant: 'destructive' });
@@ -196,6 +199,7 @@ Generated on: ${new Date().toLocaleString()}
           printWindow.print();
         }, 250);
       }
+      setExportedType('print');
       toast({ title: 'Print dialog opened' });
     } catch (error) {
       toast({ title: 'Failed to open print dialog', variant: 'destructive' });
@@ -209,7 +213,8 @@ Generated on: ${new Date().toLocaleString()}
       label: 'Export PDF',
       description: 'Professional document format',
       icon: FileDown,
-      gradient: 'from-rose-500 to-pink-500',
+      gradient: 'from-rose-500 to-pink-600',
+      bg: 'bg-gradient-to-br from-rose-500/10 to-pink-500/10',
       onClick: handleExportPdf,
     },
     {
@@ -217,7 +222,8 @@ Generated on: ${new Date().toLocaleString()}
       label: 'Export TXT',
       description: 'Plain text format',
       icon: FileText,
-      gradient: 'from-blue-500 to-cyan-500',
+      gradient: 'from-blue-500 to-indigo-600',
+      bg: 'bg-gradient-to-br from-blue-500/10 to-indigo-500/10',
       onClick: handleExportTxt,
     },
     {
@@ -225,56 +231,105 @@ Generated on: ${new Date().toLocaleString()}
       label: 'Print Report',
       description: 'Open print dialog',
       icon: Printer,
-      gradient: 'from-emerald-500 to-teal-500',
+      gradient: 'from-emerald-500 to-teal-600',
+      bg: 'bg-gradient-to-br from-emerald-500/10 to-teal-500/10',
       onClick: handlePrint,
     },
   ];
 
   return (
-    <Card className="border border-slate-200/60 bg-white shadow-sm hover:shadow-md transition-all duration-200">
-      <CardHeader className="pb-4">
-        <div className="flex items-start gap-3">
-          <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-gradient-to-br from-slate-100 to-gray-100 border border-slate-200">
-            <Download className="h-5 w-5 text-slate-600" />
+    <Card className="group relative overflow-hidden bg-white border border-slate-200/60 shadow-sm hover:shadow-lg transition-all duration-300">
+      {/* Decorative gradient */}
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-500/3 via-transparent to-slate-600/5" />
+
+      <CardHeader className="relative pb-4 pt-6 px-6">
+        <div className="flex items-start gap-4">
+          <div className="relative">
+            <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-br from-slate-600 to-slate-700 shadow-lg shadow-slate-500/25 transition-transform duration-300 group-hover:scale-105">
+              <Share2 className="h-7 w-7 text-white" />
+            </div>
           </div>
-          <div>
-            <CardTitle className="text-lg font-semibold text-slate-900">
-              Export Features
+          <div className="min-w-0 flex-1">
+            <CardTitle className="text-xl font-bold text-slate-900 tracking-tight">
+              Export & Share
             </CardTitle>
             <CardDescription className="text-sm text-slate-500 mt-1">
-              Download or print your daily report
+              Download or print your daily report in multiple formats
             </CardDescription>
           </div>
         </div>
       </CardHeader>
 
-      <CardContent>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      <CardContent className="relative px-6 pb-6">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
           {exportOptions.map((option) => {
             const Icon = option.icon;
             const isLoading = isExporting === option.id;
             const isDisabled = isExporting !== null;
+            const isCompleted = exportedType === option.id;
 
             return (
               <button
                 key={option.id}
                 onClick={option.onClick}
                 disabled={isDisabled}
-                className="group relative flex flex-col items-start p-4 rounded-xl border border-slate-200 bg-slate-50/50 hover:bg-white hover:border-slate-300 hover:shadow-sm transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed text-left w-full"
+                className={`group/export relative flex flex-col items-start p-5 rounded-xl border transition-all duration-200 text-left w-full ${
+                  isCompleted
+                    ? 'border-emerald-200 bg-emerald-50/50'
+                    : 'border-slate-200/80 bg-white hover:border-slate-300 hover:shadow-md'
+                } disabled:opacity-60 disabled:cursor-not-allowed`}
               >
-                <div className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br ${option.gradient} shadow-sm mb-3`}>
+                {/* Completion Badge */}
+                {isCompleted && (
+                  <div className="absolute top-3 right-3 flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500">
+                    <Check className="h-3 w-3 text-white" />
+                  </div>
+                )}
+
+                {/* Icon */}
+                <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${option.bg} mb-4`}>
                   {isLoading ? (
-                    <Loader2 className="h-4 w-4 text-white animate-spin" />
+                    <Loader2 className="h-5 w-5 text-slate-600 animate-spin" />
                   ) : (
-                    <Icon className="h-4 w-4 text-white" />
+                    <div className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${option.gradient} shadow-sm transition-transform group-hover/export:scale-105`}>
+                      <Icon className="h-5 w-5 text-white" />
+                    </div>
                   )}
                 </div>
-                <span className="text-sm font-medium text-slate-900">{option.label}</span>
+
+                {/* Content */}
+                <span className="text-sm font-semibold text-slate-900">{option.label}</span>
                 <span className="text-xs text-slate-500 mt-0.5">{option.description}</span>
+
+                {/* Arrow indicator */}
+                <div className="flex items-center gap-1 text-slate-400 mt-3 text-xs">
+                  <span>Export now</span>
+                  <ArrowRight className="h-3 w-3 transition-transform group-hover/export:translate-x-0.5" />
+                </div>
               </button>
             );
           })}
         </div>
+
+        {/* Recent Export Status */}
+        {exportedType && (
+          <div className="mt-4 flex items-center justify-between px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-200/50">
+            <div className="flex items-center gap-2">
+              <FileCheck className="h-4 w-4 text-emerald-600" />
+              <span className="text-sm font-medium text-emerald-700">
+                {exportedType === 'pdf' && 'PDF exported successfully'}
+                {exportedType === 'txt' && 'TXT file downloaded'}
+                {exportedType === 'print' && 'Print dialog opened'}
+              </span>
+            </div>
+            <button
+              onClick={() => setExportedType(null)}
+              className="text-xs text-emerald-600 hover:text-emerald-700 font-medium"
+            >
+              Clear
+            </button>
+          </div>
+        )}
       </CardContent>
     </Card>
   );
