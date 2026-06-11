@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { Check, Loader as Loader2, Cloud, CloudOff } from 'lucide-react';
+import { Check, Loader as Loader2, Cloud } from 'lucide-react';
 
 interface AutoSaveIndicatorProps {
   isSaving: boolean;

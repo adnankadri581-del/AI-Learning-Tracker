@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { LearningData, WorkData } from '@/types';
 import { generateReport } from '@/lib/report-generator';
-import { FileDown, Printer, FileText, Loader as Loader2, Download, FileSpreadsheet } from 'lucide-react';
+import { FileDown, Printer, FileText, Loader as Loader2, Download } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 import jsPDF from 'jspdf';
 

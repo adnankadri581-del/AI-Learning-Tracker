@@ -8,7 +8,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Label } from '@/components/ui/label';
 import { LearningData, WorkData, GeneratedEmail } from '@/types';
 import { generateEmail } from '@/lib/report-generator';
-import { Mail, Copy, Download, Loader as Loader2, Check, Send, FileText } from 'lucide-react';
+import { Mail, Copy, Loader as Loader2, Check, Send, FileText } from 'lucide-react';
 import { toast } from '@/hooks/use-toast';
 
 interface EmailGeneratorProps {
