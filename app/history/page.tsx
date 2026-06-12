@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { History, ArrowLeft, Calendar, Clock, FileText, Bot } from 'lucide-react';
 import Link from 'next/link';
+import { AuthGuard } from '@/components/auth-guard';
 
 const historyItems = [
   { id: '1', type: 'learning', title: 'Explored ChatGPT and Claude', description: 'Completed 2.5 hours of learning', date: '2026-06-12', time: '10:30 AM' },
@@ -13,7 +14,7 @@ const historyItems = [
   { id: '5', type: 'export', title: 'Exported Report as PDF', description: 'daily-report-2026-06-11.pdf', date: '2026-06-11', time: '4:30 PM' },
 ];
 
-export default function HistoryPage() {
+function HistoryContent() {
   const getIcon = (type: string) => type === 'learning' ? Bot : FileText;
   const getIconColor = (type: string) => type === 'learning' ? 'bg-emerald-500/10 dark:bg-emerald-500/20 text-emerald-500' : type === 'report' ? 'bg-blue-500/10 dark:bg-blue-500/20 text-blue-500' : 'bg-indigo-500/10 dark:bg-indigo-500/20 text-indigo-500';
 
@@ -75,5 +76,13 @@ export default function HistoryPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function HistoryPage() {
+  return (
+    <AuthGuard>
+      <HistoryContent />
+    </AuthGuard>
   );
 }

@@ -4,8 +4,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Target, ArrowLeft, Plus, CircleCheck as CheckCircle2, Circle } from 'lucide-react';
 import Link from 'next/link';
+import { AuthGuard } from '@/components/auth-guard';
 
-export default function GoalsPage() {
+function GoalsContent() {
   const goals = [
     { id: '1', title: 'Complete AI Fundamentals Course', description: 'Finish the comprehensive AI fundamentals certification', completed: false, target: 'June 30, 2026' },
     { id: '2', title: 'Explore 10 AI Tools', description: 'Try out at least 10 different AI tools this month', completed: false, target: 'June 30, 2026' },
@@ -65,5 +66,13 @@ export default function GoalsPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function GoalsPage() {
+  return (
+    <AuthGuard>
+      <GoalsContent />
+    </AuthGuard>
   );
 }

@@ -10,6 +10,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '@/
 import { CircleHelp as HelpCircle, BookOpen, MessageCircle, Mail, ChevronRight, Search, ExternalLink, FileText, Keyboard, Zap, ArrowLeft, Send, CircleCheck as CheckCircle2 } from 'lucide-react';
 import Link from 'next/link';
 import { toast } from '@/hooks/use-toast';
+import { AuthGuard } from '@/components/auth-guard';
 
 const faqItems = [
   {
@@ -78,7 +79,7 @@ const keyboardShortcuts = [
   { keys: 'Enter', action: 'Select item' },
 ];
 
-export default function HelpPage() {
+function HelpContent() {
   const [subject, setSubject] = useState('');
   const [message, setMessage] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -319,5 +320,13 @@ export default function HelpPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function HelpPage() {
+  return (
+    <AuthGuard>
+      <HelpContent />
+    </AuthGuard>
   );
 }

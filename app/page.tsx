@@ -1,6 +1,7 @@
 'use client';
 
 import dynamic from 'next/dynamic';
+import { AuthGuard } from '@/components/auth-guard';
 
 // Dynamically import the dashboard content to avoid SSR issues
 const DashboardContent = dynamic(
@@ -19,5 +20,9 @@ const DashboardContent = dynamic(
 );
 
 export default function Dashboard() {
-  return <DashboardContent />;
+  return (
+    <AuthGuard>
+      <DashboardContent />
+    </AuthGuard>
+  );
 }

@@ -4,8 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { ChartBar as BarChart3, ArrowLeft, TrendingUp, Calendar } from 'lucide-react';
 import Link from 'next/link';
+import { AuthGuard } from '@/components/auth-guard';
 
-export default function AnalyticsPage() {
+function AnalyticsContent() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <div className="lg:hidden">
@@ -72,5 +73,13 @@ export default function AnalyticsPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function AnalyticsPage() {
+  return (
+    <AuthGuard>
+      <AnalyticsContent />
+    </AuthGuard>
   );
 }

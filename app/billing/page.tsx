@@ -4,6 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Button } from '@/components/ui/button';
 import { CreditCard, ArrowLeft, Check, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { AuthGuard } from '@/components/auth-guard';
 
 const plans = [
   { name: 'Free', price: '$0', description: 'Basic tracking features', features: ['Daily learning tracking', 'Basic reports', '5 AI tools tracking'], current: false },
@@ -11,7 +12,7 @@ const plans = [
   { name: 'Enterprise', price: '$29', period: '/month', description: 'For teams and organizations', features: ['Everything in Pro', 'Team collaboration', 'API access', 'Custom reports', 'SSO'], current: false },
 ];
 
-export default function BillingPage() {
+function BillingContent() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <div className="lg:hidden">
@@ -83,5 +84,13 @@ export default function BillingPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function BillingPage() {
+  return (
+    <AuthGuard>
+      <BillingContent />
+    </AuthGuard>
   );
 }

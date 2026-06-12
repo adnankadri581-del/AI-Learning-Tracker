@@ -4,8 +4,9 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { FileText, ArrowLeft, Calendar, Download, Eye } from 'lucide-react';
 import Link from 'next/link';
+import { AuthGuard } from '@/components/auth-guard';
 
-export default function ReportsPage() {
+function ReportsContent() {
   const reports = [
     { id: '1', date: '2026-06-12', title: 'Daily Report - June 12, 2026', preview: 'Completed AI learning activities...' },
     { id: '2', date: '2026-06-11', title: 'Daily Report - June 11, 2026', preview: 'Focused on ML fundamentals...' },
@@ -74,5 +75,13 @@ export default function ReportsPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function ReportsPage() {
+  return (
+    <AuthGuard>
+      <ReportsContent />
+    </AuthGuard>
   );
 }

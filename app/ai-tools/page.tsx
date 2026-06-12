@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
 import { Bot, ArrowLeft, ExternalLink, Sparkles } from 'lucide-react';
 import Link from 'next/link';
+import { AuthGuard } from '@/components/auth-guard';
 
 const aiTools = [
   { name: 'ChatGPT', description: 'Advanced conversational AI assistant by OpenAI', category: 'Conversational AI', url: 'https://chat.openai.com', status: 'popular' },
@@ -15,7 +16,7 @@ const aiTools = [
   { name: 'Hugging Face', description: 'Platform for ML models and datasets', category: 'ML Platform', url: 'https://huggingface.co', status: 'popular' },
 ];
 
-export default function AIToolsPage() {
+function AIToolsContent() {
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
       <div className="lg:hidden">
@@ -74,5 +75,13 @@ export default function AIToolsPage() {
         </div>
       </main>
     </div>
+  );
+}
+
+export default function AIToolsPage() {
+  return (
+    <AuthGuard>
+      <AIToolsContent />
+    </AuthGuard>
   );
 }
