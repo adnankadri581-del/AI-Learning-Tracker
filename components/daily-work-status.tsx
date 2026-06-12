@@ -40,9 +40,9 @@ export function DailyWorkStatus({ data, onChange }: DailyWorkStatusProps) {
   const hasBlockers = safeWorkData.currentBlockers && safeWorkData.currentBlockers.trim().length > 0;
 
   return (
-    <Card className="group relative overflow-hidden bg-white border border-slate-200/60 shadow-sm hover:shadow-lg transition-all duration-300">
+    <Card className="group relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-sm hover:shadow-lg transition-all duration-300">
       {/* Decorative gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-indigo-500/5 opacity-50" />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/5 via-transparent to-indigo-500/5 dark:from-blue-500/10 dark:to-indigo-500/10 opacity-50" />
 
       <CardHeader className="relative pb-4 pt-6 px-6">
         <div className="flex items-start gap-4">
@@ -51,19 +51,19 @@ export function DailyWorkStatus({ data, onChange }: DailyWorkStatusProps) {
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-xl font-bold text-slate-900 tracking-tight">
+              <CardTitle className="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                 Work Update
               </CardTitle>
               <div className="flex items-center gap-2">
-                <div className={`flex items-center gap-1.5 rounded-full px-3 py-1 ${tasksCount > 0 ? 'bg-emerald-50 border border-emerald-200/50' : 'bg-slate-50 border border-slate-200/50'}`}>
-                  <ListTodo className={`h-3.5 w-3.5 ${tasksCount > 0 ? 'text-emerald-500' : 'text-slate-400'}`} />
-                  <span className={`text-xs font-semibold ${tasksCount > 0 ? 'text-emerald-600' : 'text-slate-500'}`}>
+                <div className={`flex items-center gap-1.5 rounded-full px-3 py-1 ${tasksCount > 0 ? 'bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200/50 dark:border-emerald-800/50' : 'bg-slate-50 dark:bg-slate-800 border border-slate-200/50 dark:border-slate-700'}`}>
+                  <ListTodo className={`h-3.5 w-3.5 ${tasksCount > 0 ? 'text-emerald-500' : 'text-slate-400 dark:text-slate-500'}`} />
+                  <span className={`text-xs font-semibold ${tasksCount > 0 ? 'text-emerald-600 dark:text-emerald-400' : 'text-slate-500 dark:text-slate-400'}`}>
                     {tasksCount} tasks
                   </span>
                 </div>
               </div>
             </div>
-            <CardDescription className="text-sm text-slate-500 mt-1">
+            <CardDescription className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               Document accomplishments and plan ahead
             </CardDescription>
           </div>
@@ -73,13 +73,13 @@ export function DailyWorkStatus({ data, onChange }: DailyWorkStatusProps) {
       <CardContent className="relative px-6 pb-6 space-y-5">
         {/* Tasks Completed - Featured */}
         <div className="space-y-2">
-          <Label htmlFor="tasksCompleted" className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500/10 to-teal-500/10">
+          <Label htmlFor="tasksCompleted" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500/10 to-teal-500/10 dark:from-emerald-500/20 dark:to-teal-500/20">
               <CheckCircle2 className="h-3.5 w-3.5 text-emerald-500" />
             </div>
             Tasks Completed Today
             {tasksCount > 0 && (
-              <span className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">
+              <span className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20 px-2 py-0.5 rounded-full">
                 <ArrowUpRight className="h-3 w-3" />
                 {tasksCount} completed
               </span>
@@ -91,15 +91,15 @@ export function DailyWorkStatus({ data, onChange }: DailyWorkStatusProps) {
             onChange={(e) => onChange({ ...safeWorkData, tasksCompleted: e.target.value })}
             placeholder="List tasks completed today (one per line for better readability)..."
             rows={4}
-            className="border-slate-200 bg-slate-50/50 focus:bg-white focus:border-blue-500 focus:ring-blue-500/20 resize-none transition-all"
+            className="border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-blue-500/20 resize-none transition-all"
           />
         </div>
 
         {/* Features & Bugs Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div className="space-y-2">
-            <Label htmlFor="featuresDelivered" className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/10 to-indigo-500/10">
+            <Label htmlFor="featuresDelivered" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/10 to-indigo-500/10 dark:from-blue-500/20 dark:to-indigo-500/20">
                 <Rocket className="h-3.5 w-3.5 text-blue-500" />
               </div>
               Features Delivered
@@ -110,13 +110,13 @@ export function DailyWorkStatus({ data, onChange }: DailyWorkStatusProps) {
               onChange={(e) => onChange({ ...safeWorkData, featuresDelivered: e.target.value })}
               placeholder="Features completed today..."
               rows={3}
-              className="border-slate-200 bg-slate-50/50 focus:bg-white focus:border-blue-500 focus:ring-blue-500/20 resize-none transition-all"
+              className="border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-blue-500/20 resize-none transition-all"
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="bugsFixed" className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500/10 to-orange-500/10">
+            <Label htmlFor="bugsFixed" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+              <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/20 dark:to-orange-500/20">
                 <Bug className="h-3.5 w-3.5 text-amber-500" />
               </div>
               Bugs Fixed
@@ -127,15 +127,15 @@ export function DailyWorkStatus({ data, onChange }: DailyWorkStatusProps) {
               onChange={(e) => onChange({ ...safeWorkData, bugsFixed: e.target.value })}
               placeholder="Issues resolved today..."
               rows={3}
-              className="border-slate-200 bg-slate-50/50 focus:bg-white focus:border-blue-500 focus:ring-blue-500/20 resize-none transition-all"
+              className="border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-blue-500/20 resize-none transition-all"
             />
           </div>
         </div>
 
         {/* Tomorrow's Plan */}
         <div className="space-y-2">
-          <Label htmlFor="tomorrowPlan" className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500/10 to-blue-500/10">
+          <Label htmlFor="tomorrowPlan" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+            <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-gradient-to-br from-indigo-500/10 to-blue-500/10 dark:from-indigo-500/20 dark:to-blue-500/20">
               <Calendar className="h-3.5 w-3.5 text-indigo-500" />
             </div>
             Tomorrow's Plan
@@ -146,19 +146,19 @@ export function DailyWorkStatus({ data, onChange }: DailyWorkStatusProps) {
             onChange={(e) => onChange({ ...safeWorkData, tomorrowPlan: e.target.value })}
             placeholder="Outline planned activities for tomorrow..."
             rows={4}
-            className="border-slate-200 bg-slate-50/50 focus:bg-white focus:border-blue-500 focus:ring-blue-500/20 resize-none transition-all"
+            className="border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-blue-500/20 resize-none transition-all"
           />
         </div>
 
         {/* Current Blockers - highlighted for visibility */}
         <div className="space-y-2">
-          <Label htmlFor="currentBlockers" className="text-sm font-semibold text-slate-700 flex items-center gap-2">
-            <div className={`flex h-7 w-7 items-center justify-center rounded-lg ${hasBlockers ? 'bg-gradient-to-br from-rose-500/10 to-red-500/10' : 'bg-gradient-to-br from-slate-400/10 to-slate-500/10'}`}>
-              <AlertCircle className={`h-3.5 w-3.5 ${hasBlockers ? 'text-rose-500' : 'text-slate-400'}`} />
+          <Label htmlFor="currentBlockers" className="text-sm font-semibold text-slate-700 dark:text-slate-300 flex items-center gap-2">
+            <div className={`flex h-7 w-7 items-center justify-center rounded-lg ${hasBlockers ? 'bg-gradient-to-br from-rose-500/10 to-red-500/10 dark:from-rose-500/20 dark:to-red-500/20' : 'bg-gradient-to-br from-slate-400/10 to-slate-500/10 dark:from-slate-500/20 dark:to-slate-600/20'}`}>
+              <AlertCircle className={`h-3.5 w-3.5 ${hasBlockers ? 'text-rose-500' : 'text-slate-400 dark:text-slate-500'}`} />
             </div>
             Current Blockers
             {hasBlockers && (
-              <span className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-rose-600 bg-rose-50 px-2 py-0.5 rounded-full border border-rose-200/50">
+              <span className="ml-auto inline-flex items-center gap-1 text-xs font-medium text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/20 px-2 py-0.5 rounded-full border border-rose-200/50 dark:border-rose-800/50">
                 Attention needed
               </span>
             )}
@@ -169,7 +169,7 @@ export function DailyWorkStatus({ data, onChange }: DailyWorkStatusProps) {
             onChange={(e) => onChange({ ...safeWorkData, currentBlockers: e.target.value })}
             placeholder="Describe any obstacles or blockers you're facing..."
             rows={3}
-            className={`border-slate-200 bg-slate-50/50 focus:bg-white focus:border-blue-500 focus:ring-blue-500/20 resize-none transition-all ${hasBlockers ? 'border-rose-200 bg-rose-50/30 focus:border-rose-500 focus:ring-rose-500/20' : ''}`}
+            className={`border-slate-200 dark:border-slate-700 bg-slate-50/50 dark:bg-slate-800/50 focus:bg-white dark:focus:bg-slate-800 focus:border-blue-500 focus:ring-blue-500/20 resize-none transition-all ${hasBlockers ? 'border-rose-200 dark:border-rose-800 bg-rose-50/30 dark:bg-rose-900/20 focus:border-rose-500 focus:ring-rose-500/20' : ''}`}
           />
         </div>
       </CardContent>

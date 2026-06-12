@@ -106,9 +106,9 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
       subtitle: 'Total invested',
       icon: Clock,
       gradient: 'from-blue-500 to-indigo-600',
-      iconBg: 'bg-gradient-to-br from-blue-500/10 to-indigo-500/10',
+      iconBg: 'bg-gradient-to-br from-blue-500/10 to-indigo-500/10 dark:from-blue-500/20 dark:to-indigo-500/20',
       iconColor: 'text-blue-500',
-      borderColor: 'border-blue-200/50',
+      borderColor: 'border-blue-200/50 dark:border-blue-800/50',
     },
     {
       title: 'AI Tools',
@@ -116,9 +116,9 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
       subtitle: 'Tools explored',
       icon: Wrench,
       gradient: 'from-emerald-500 to-teal-600',
-      iconBg: 'bg-gradient-to-br from-emerald-500/10 to-teal-500/10',
+      iconBg: 'bg-gradient-to-br from-emerald-500/10 to-teal-500/10 dark:from-emerald-500/20 dark:to-teal-500/20',
       iconColor: 'text-emerald-500',
-      borderColor: 'border-emerald-200/50',
+      borderColor: 'border-emerald-200/50 dark:border-emerald-800/50',
     },
     {
       title: 'Reports',
@@ -126,9 +126,9 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
       subtitle: 'Generated',
       icon: FileText,
       gradient: 'from-amber-500 to-orange-600',
-      iconBg: 'bg-gradient-to-br from-amber-500/10 to-orange-500/10',
+      iconBg: 'bg-gradient-to-br from-amber-500/10 to-orange-500/10 dark:from-amber-500/20 dark:to-orange-500/20',
       iconColor: 'text-amber-500',
-      borderColor: 'border-amber-200/50',
+      borderColor: 'border-amber-200/50 dark:border-amber-800/50',
     },
     {
       title: 'Productivity',
@@ -141,20 +141,20 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
         ? 'from-blue-500 to-indigo-600'
         : 'from-slate-400 to-slate-500',
       iconBg: currentProductivityScore >= 80
-        ? 'bg-gradient-to-br from-emerald-500/10 to-green-500/10'
+        ? 'bg-gradient-to-br from-emerald-500/10 to-green-500/10 dark:from-emerald-500/20 dark:to-green-500/20'
         : currentProductivityScore >= 60
-        ? 'bg-gradient-to-br from-blue-500/10 to-indigo-500/10'
-        : 'bg-gradient-to-br from-slate-400/10 to-slate-500/10',
+        ? 'bg-gradient-to-br from-blue-500/10 to-indigo-500/10 dark:from-blue-500/20 dark:to-indigo-500/20'
+        : 'bg-gradient-to-br from-slate-400/10 to-slate-500/10 dark:from-slate-500/20 dark:to-slate-600/20',
       iconColor: currentProductivityScore >= 80
         ? 'text-emerald-500'
         : currentProductivityScore >= 60
         ? 'text-blue-500'
-        : 'text-slate-400',
+        : 'text-slate-400 dark:text-slate-500',
       borderColor: currentProductivityScore >= 80
-        ? 'border-emerald-200/50'
+        ? 'border-emerald-200/50 dark:border-emerald-800/50'
         : currentProductivityScore >= 60
-        ? 'border-blue-200/50'
-        : 'border-slate-200/50',
+        ? 'border-blue-200/50 dark:border-blue-800/50'
+        : 'border-slate-200/50 dark:border-slate-700',
     },
   ];
 
@@ -171,36 +171,36 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
     if (score >= 80) return {
       label: 'Excellent',
       gradient: 'from-emerald-500 to-teal-500',
-      color: 'text-emerald-600',
-      bg: 'bg-emerald-50',
+      color: 'text-emerald-600 dark:text-emerald-400',
+      bg: 'bg-emerald-50 dark:bg-emerald-900/20',
     };
     if (score >= 60) return {
       label: 'Good',
       gradient: 'from-blue-500 to-indigo-500',
-      color: 'text-blue-600',
-      bg: 'bg-blue-50',
+      color: 'text-blue-600 dark:text-blue-400',
+      bg: 'bg-blue-50 dark:bg-blue-900/20',
     };
     if (score >= 40) return {
       label: 'Progressing',
       gradient: 'from-amber-500 to-orange-500',
-      color: 'text-amber-600',
-      bg: 'bg-amber-50',
+      color: 'text-amber-600 dark:text-amber-400',
+      bg: 'bg-amber-50 dark:bg-amber-900/20',
     };
     return {
       label: 'Focus Area',
       gradient: 'from-slate-400 to-slate-500',
-      color: 'text-slate-500',
-      bg: 'bg-slate-50',
+      color: 'text-slate-500 dark:text-slate-400',
+      bg: 'bg-slate-50 dark:bg-slate-800',
     };
   };
 
   const scoreConfig = getScoreConfig(currentProductivityScore);
 
   return (
-    <Card className="group relative overflow-hidden bg-white border border-slate-200/60 shadow-sm hover:shadow-lg transition-all duration-300">
+    <Card className="group relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-sm hover:shadow-lg transition-all duration-300">
       {/* Decorative gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/3 via-transparent to-indigo-500/3" />
-      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-500/5 to-transparent rounded-full blur-3xl" />
+      <div className="absolute inset-0 bg-gradient-to-br from-blue-500/3 via-transparent to-indigo-500/3 dark:from-blue-500/5 dark:to-indigo-500/5" />
+      <div className="absolute top-0 right-0 w-48 h-48 bg-gradient-to-br from-blue-500/5 to-transparent dark:from-blue-500/10 rounded-full blur-3xl" />
 
       <CardHeader className="relative pb-4 pt-6 px-6">
         <div className="flex items-start gap-4">
@@ -209,7 +209,7 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
           </div>
           <div className="min-w-0 flex-1">
             <div className="flex items-center justify-between">
-              <CardTitle className="text-xl font-bold text-slate-900 tracking-tight">
+              <CardTitle className="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                 Analytics Dashboard
               </CardTitle>
               <div className={`flex items-center gap-1.5 rounded-full px-3 py-1 ${scoreConfig.bg}`}>
@@ -217,7 +217,7 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
                 <span className={`text-xs font-semibold ${scoreConfig.color}`}>{scoreConfig.label}</span>
               </div>
             </div>
-            <CardDescription className="text-sm text-slate-500 mt-1">
+            <CardDescription className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               Track your learning metrics and productivity trends
             </CardDescription>
           </div>
@@ -230,17 +230,17 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
           {stats.map((stat) => (
             <div
               key={stat.title}
-              className={`group/stat relative overflow-hidden rounded-xl border ${stat.borderColor} bg-white p-4 hover:shadow-md transition-all duration-200`}
+              className={`group/stat relative overflow-hidden rounded-xl border ${stat.borderColor} bg-white dark:bg-slate-800 p-4 hover:shadow-md transition-all duration-200`}
             >
               <div className="flex items-start justify-between mb-3">
                 <div className={`flex h-10 w-10 items-center justify-center rounded-xl ${stat.iconBg}`}>
                   <stat.icon className={`h-5 w-5 ${stat.iconColor}`} />
                 </div>
-                <ArrowUpRight className="h-4 w-4 text-slate-300 group-hover/stat:text-slate-400 transition-colors" />
+                <ArrowUpRight className="h-4 w-4 text-slate-300 dark:text-slate-600 group-hover/stat:text-slate-400 dark:group-hover/stat:text-slate-500 transition-colors" />
               </div>
-              <div className="text-2xl font-bold text-slate-900 tracking-tight">{stat.value}</div>
-              <div className="text-sm font-medium text-slate-700 mt-0.5">{stat.title}</div>
-              <div className="text-xs text-slate-500">{stat.subtitle}</div>
+              <div className="text-2xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">{stat.value}</div>
+              <div className="text-sm font-medium text-slate-700 dark:text-slate-300 mt-0.5">{stat.title}</div>
+              <div className="text-xs text-slate-500 dark:text-slate-400">{stat.subtitle}</div>
             </div>
           ))}
         </div>
@@ -248,23 +248,23 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
         {/* Premium Charts */}
         <div className="grid lg:grid-cols-2 gap-5">
           {/* Weekly Learning Hours Chart */}
-          <Card className="border border-slate-200/60 bg-slate-50/30 hover:bg-slate-50/50 transition-colors">
+          <Card className="border border-slate-200/60 dark:border-slate-700 bg-slate-50/30 dark:bg-slate-800/30 hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
             <CardHeader className="pb-3 pt-5 px-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/10 to-indigo-500/10">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-blue-500/10 to-indigo-500/10 dark:from-blue-500/20 dark:to-indigo-500/20">
                     <BarChart3 className="h-4 w-4 text-blue-500" />
                   </div>
-                  <CardTitle className="text-base font-semibold text-slate-900">
+                  <CardTitle className="text-base font-semibold text-slate-900 dark:text-slate-100">
                     Weekly Learning Hours
                   </CardTitle>
                 </div>
-                <div className="flex items-center gap-1 text-xs text-slate-500">
+                <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
                   <Clock className="h-3 w-3" />
                   <span>This week</span>
                 </div>
               </div>
-              <CardDescription className="text-sm text-slate-500 mt-1 pl-10">
+              <CardDescription className="text-sm text-slate-500 dark:text-slate-400 mt-1 pl-10">
                 Your learning activity throughout the week
               </CardDescription>
             </CardHeader>
@@ -311,30 +311,30 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
                     </BarChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full bg-slate-100 animate-pulse rounded-lg" />
+                  <div className="h-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-lg" />
                 )}
               </div>
             </CardContent>
           </Card>
 
           {/* Productivity Trend Chart */}
-          <Card className="border border-slate-200/60 bg-slate-50/30 hover:bg-slate-50/50 transition-colors">
+          <Card className="border border-slate-200/60 dark:border-slate-700 bg-slate-50/30 dark:bg-slate-800/30 hover:bg-slate-50/50 dark:hover:bg-slate-800/50 transition-colors">
             <CardHeader className="pb-3 pt-5 px-5">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500/10 to-teal-500/10">
+                  <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-emerald-500/10 to-teal-500/10 dark:from-emerald-500/20 dark:to-teal-500/20">
                     <Activity className="h-4 w-4 text-emerald-500" />
                   </div>
-                  <CardTitle className="text-base font-semibold text-slate-900">
+                  <CardTitle className="text-base font-semibold text-slate-900 dark:text-slate-100">
                     Productivity Trend
                   </CardTitle>
                 </div>
-                <div className="flex items-center gap-1 text-xs text-slate-500">
+                <div className="flex items-center gap-1 text-xs text-slate-500 dark:text-slate-400">
                   <TrendingUp className="h-3 w-3" />
                   <span>Score trend</span>
                 </div>
               </div>
-              <CardDescription className="text-sm text-slate-500 mt-1 pl-10">
+              <CardDescription className="text-sm text-slate-500 dark:text-slate-400 mt-1 pl-10">
                 Your productivity score progression
               </CardDescription>
             </CardHeader>
@@ -383,7 +383,7 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
                     </AreaChart>
                   </ResponsiveContainer>
                 ) : (
-                  <div className="h-full bg-slate-100 animate-pulse rounded-lg" />
+                  <div className="h-full bg-slate-100 dark:bg-slate-800 animate-pulse rounded-lg" />
                 )}
               </div>
             </CardContent>
@@ -391,15 +391,15 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
         </div>
 
         {/* Today's Progress Summary */}
-        <div className="rounded-xl border border-slate-200/80 bg-gradient-to-r from-slate-50 to-slate-100/50 p-5">
+        <div className="rounded-xl border border-slate-200/80 dark:border-slate-700 bg-gradient-to-r from-slate-50 to-slate-100/50 dark:from-slate-800 dark:to-slate-800/50 p-5">
           <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
             <div className="flex items-center gap-3">
               <div className={`flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br ${scoreConfig.gradient} shadow-md`}>
                 <Zap className="h-5 w-5 text-white" />
               </div>
               <div>
-                <span className="text-sm font-semibold text-slate-700">Today's Progress</span>
-                <p className="text-xs text-slate-500">
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">Today's Progress</span>
+                <p className="text-xs text-slate-500 dark:text-slate-400">
                   {currentProductivityScore >= 80
                     ? 'Outstanding performance!'
                     : currentProductivityScore >= 60
@@ -412,7 +412,7 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
             </div>
             <div className="flex items-center gap-4">
               <div className="flex-1 sm:w-48">
-                <div className="h-2.5 w-full overflow-hidden rounded-full bg-slate-200">
+                <div className="h-2.5 w-full overflow-hidden rounded-full bg-slate-200 dark:bg-slate-700">
                   <div
                     className={`h-full rounded-full bg-gradient-to-r transition-all duration-700 ease-out ${scoreConfig.gradient}`}
                     style={{ width: `${currentProductivityScore}%` }}
@@ -420,8 +420,8 @@ export function AnalyticsDashboard({ learning, work, weeklyData }: AnalyticsDash
                 </div>
               </div>
               <div className="flex items-baseline gap-0.5">
-                <span className="text-2xl font-bold text-slate-900">{currentProductivityScore}</span>
-                <span className="text-sm text-slate-500">%</span>
+                <span className="text-2xl font-bold text-slate-900 dark:text-slate-100">{currentProductivityScore}</span>
+                <span className="text-sm text-slate-500 dark:text-slate-400">%</span>
               </div>
             </div>
           </div>

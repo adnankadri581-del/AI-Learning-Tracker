@@ -238,9 +238,9 @@ Generated on: ${new Date().toLocaleString()}
   ];
 
   return (
-    <Card className="group relative overflow-hidden bg-white border border-slate-200/60 shadow-sm hover:shadow-lg transition-all duration-300">
+    <Card className="group relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-sm hover:shadow-lg transition-all duration-300">
       {/* Decorative gradient */}
-      <div className="absolute inset-0 bg-gradient-to-br from-slate-500/3 via-transparent to-slate-600/5" />
+      <div className="absolute inset-0 bg-gradient-to-br from-slate-500/3 via-transparent to-slate-600/5 dark:from-slate-500/5 dark:to-slate-600/10" />
 
       <CardHeader className="relative pb-4 pt-6 px-6">
         <div className="flex items-start gap-4">
@@ -250,10 +250,10 @@ Generated on: ${new Date().toLocaleString()}
             </div>
           </div>
           <div className="min-w-0 flex-1">
-            <CardTitle className="text-xl font-bold text-slate-900 tracking-tight">
+            <CardTitle className="text-xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
               Export & Share
             </CardTitle>
-            <CardDescription className="text-sm text-slate-500 mt-1">
+            <CardDescription className="text-sm text-slate-500 dark:text-slate-400 mt-1">
               Download or print your daily report in multiple formats
             </CardDescription>
           </div>
@@ -275,8 +275,8 @@ Generated on: ${new Date().toLocaleString()}
                 disabled={isDisabled}
                 className={`group/export relative flex flex-col items-start p-5 rounded-xl border transition-all duration-200 text-left w-full ${
                   isCompleted
-                    ? 'border-emerald-200 bg-emerald-50/50'
-                    : 'border-slate-200/80 bg-white hover:border-slate-300 hover:shadow-md'
+                    ? 'border-emerald-200 dark:border-emerald-800 bg-emerald-50/50 dark:bg-emerald-900/20'
+                    : 'border-slate-200/80 dark:border-slate-700 bg-white dark:bg-slate-800/50 hover:border-slate-300 dark:hover:border-slate-600 hover:shadow-md'
                 } disabled:opacity-60 disabled:cursor-not-allowed`}
               >
                 {/* Completion Badge */}
@@ -289,7 +289,7 @@ Generated on: ${new Date().toLocaleString()}
                 {/* Icon */}
                 <div className={`flex h-11 w-11 shrink-0 items-center justify-center rounded-xl ${option.bg} mb-4`}>
                   {isLoading ? (
-                    <Loader2 className="h-5 w-5 text-slate-600 animate-spin" />
+                    <Loader2 className="h-5 w-5 text-slate-600 dark:text-slate-400 animate-spin" />
                   ) : (
                     <div className={`flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br ${option.gradient} shadow-sm transition-transform group-hover/export:scale-105`}>
                       <Icon className="h-5 w-5 text-white" />
@@ -298,11 +298,11 @@ Generated on: ${new Date().toLocaleString()}
                 </div>
 
                 {/* Content */}
-                <span className="text-sm font-semibold text-slate-900">{option.label}</span>
-                <span className="text-xs text-slate-500 mt-0.5">{option.description}</span>
+                <span className="text-sm font-semibold text-slate-900 dark:text-slate-100">{option.label}</span>
+                <span className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">{option.description}</span>
 
                 {/* Arrow indicator */}
-                <div className="flex items-center gap-1 text-slate-400 mt-3 text-xs">
+                <div className="flex items-center gap-1 text-slate-400 dark:text-slate-500 mt-3 text-xs">
                   <span>Export now</span>
                   <ArrowRight className="h-3 w-3 transition-transform group-hover/export:translate-x-0.5" />
                 </div>
@@ -313,10 +313,10 @@ Generated on: ${new Date().toLocaleString()}
 
         {/* Recent Export Status */}
         {exportedType && (
-          <div className="mt-4 flex items-center justify-between px-4 py-3 rounded-xl bg-emerald-50 border border-emerald-200/50">
+          <div className="mt-4 flex items-center justify-between px-4 py-3 rounded-xl bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200/50 dark:border-emerald-800/50">
             <div className="flex items-center gap-2">
-              <FileCheck className="h-4 w-4 text-emerald-600" />
-              <span className="text-sm font-medium text-emerald-700">
+              <FileCheck className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
+              <span className="text-sm font-medium text-emerald-700 dark:text-emerald-400">
                 {exportedType === 'pdf' && 'PDF exported successfully'}
                 {exportedType === 'txt' && 'TXT file downloaded'}
                 {exportedType === 'print' && 'Print dialog opened'}
@@ -324,7 +324,7 @@ Generated on: ${new Date().toLocaleString()}
             </div>
             <button
               onClick={() => setExportedType(null)}
-              className="text-xs text-emerald-600 hover:text-emerald-700 font-medium"
+              className="text-xs text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 font-medium"
             >
               Clear
             </button>

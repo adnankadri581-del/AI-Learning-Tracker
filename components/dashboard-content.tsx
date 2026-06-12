@@ -24,17 +24,17 @@ const AnalyticsDashboard = dynamic(
   {
     ssr: false,
     loading: () => (
-      <Card className="border border-slate-200/60 bg-white shadow-sm">
+      <Card className="border border-slate-200/60 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
         <CardContent className="p-6">
           <div className="space-y-6">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
               {[1, 2, 3, 4].map((i) => (
-                <div key={i} className="h-24 bg-slate-100 animate-pulse rounded-lg" />
+                <div key={i} className="h-24 bg-slate-100 dark:bg-slate-800 animate-pulse rounded-lg" />
               ))}
             </div>
             <div className="grid lg:grid-cols-2 gap-4">
-              <div className="h-[250px] bg-slate-100 animate-pulse rounded-lg" />
-              <div className="h-[250px] bg-slate-100 animate-pulse rounded-lg" />
+              <div className="h-[250px] bg-slate-100 dark:bg-slate-800 animate-pulse rounded-lg" />
+              <div className="h-[250px] bg-slate-100 dark:bg-slate-800 animate-pulse rounded-lg" />
             </div>
           </div>
         </CardContent>
@@ -163,15 +163,15 @@ export function DashboardContent() {
 
   if (learningLoading || workLoading || weeklyLoading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50">
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/30 to-slate-50 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
         <div className="flex flex-col items-center gap-4">
           <div className="relative">
-            <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 border-t-blue-500" />
+            <div className="h-12 w-12 animate-spin rounded-full border-4 border-slate-200 dark:border-slate-700 border-t-blue-500" />
             <div className="absolute inset-0 h-12 w-12 animate-ping rounded-full bg-blue-500/20" />
           </div>
           <div className="text-center">
-            <p className="text-sm font-medium text-slate-700">Loading your workspace</p>
-            <p className="text-xs text-slate-500 mt-0.5">Preparing your dashboard...</p>
+            <p className="text-sm font-medium text-slate-700 dark:text-slate-300">Loading your workspace</p>
+            <p className="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Preparing your dashboard...</p>
           </div>
         </div>
       </div>
@@ -259,16 +259,16 @@ export function DashboardContent() {
   const getTrendColor = (trend: string) => {
     switch (trend) {
       case 'up':
-        return 'text-emerald-600 bg-emerald-50';
+        return 'text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/30';
       case 'down':
-        return 'text-rose-600 bg-rose-50';
+        return 'text-rose-600 dark:text-rose-400 bg-rose-50 dark:bg-rose-900/30';
       default:
-        return 'text-slate-600 bg-slate-100';
+        return 'text-slate-600 dark:text-slate-400 bg-slate-100 dark:bg-slate-800';
     }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-50/80 to-blue-50/20">
+    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-slate-50/80 to-blue-50/20 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950">
       <div className="hidden lg:block">
         <Sidebar />
       </div>
@@ -278,9 +278,9 @@ export function DashboardContent() {
           {/* Status Bar */}
           <div className="flex items-center justify-between mb-6">
             <div className="flex items-center gap-2">
-              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 border border-emerald-200/50">
+              <div className="flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200/50 dark:border-emerald-800/50">
                 <div className="h-1.5 w-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                <span className="text-xs font-medium text-emerald-700">All systems operational</span>
+                <span className="text-xs font-medium text-emerald-700 dark:text-emerald-400">All systems operational</span>
               </div>
             </div>
             <AutoSaveIndicator isSaving={isSaving} lastSaved={lastSaved} />
@@ -291,7 +291,7 @@ export function DashboardContent() {
             {statCards.map((stat, index) => (
               <Card
                 key={stat.label}
-                className={`group relative overflow-hidden bg-white border border-slate-200/60 shadow-sm hover:shadow-lg hover:border-slate-300/80 transition-all duration-300 ${stat.isScore ? 'stat-glow' : ''}`}
+                className={`group relative overflow-hidden bg-white dark:bg-slate-900 border border-slate-200/60 dark:border-slate-800 shadow-sm hover:shadow-lg hover:border-slate-300/80 dark:hover:border-slate-700 transition-all duration-300 ${stat.isScore ? 'stat-glow' : ''}`}
                 style={{ animationDelay: `${index * 50}ms` }}
               >
                 <CardContent className="p-5 sm:p-6">
@@ -306,21 +306,21 @@ export function DashboardContent() {
                   </div>
 
                   <div className="space-y-1">
-                    <p className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                    <p className="text-xs font-medium text-slate-500 dark:text-slate-400 uppercase tracking-wide">
                       {stat.label}
                     </p>
                     <div className="flex items-baseline gap-1">
-                      <p className="text-3xl sm:text-4xl font-bold text-slate-900 tracking-tight">
+                      <p className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-slate-100 tracking-tight">
                         {stat.value}
                       </p>
                     </div>
-                    <p className="text-xs text-slate-500">{stat.subtitle}</p>
+                    <p className="text-xs text-slate-500 dark:text-slate-400">{stat.subtitle}</p>
                   </div>
 
                   {/* Score Progress Bar */}
                   {stat.isScore && (
                     <div className="mt-4 space-y-2">
-                      <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full rounded-full overflow-hidden">
                         <div
                           className="h-full bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full transition-all duration-700 ease-out"
                           style={{ width: `${stat.scoreValue}%` }}
@@ -330,7 +330,7 @@ export function DashboardContent() {
                   )}
 
                   {/* Decorative gradient */}
-                  <div className="absolute -bottom-4 -right-4 h-20 w-20 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  <div className="absolute -bottom-4 -right-4 h-20 w-20 bg-gradient-to-br from-blue-500/5 to-indigo-500/5 dark:from-blue-500/10 dark:to-indigo-500/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </CardContent>
               </Card>
             ))}
@@ -367,9 +367,9 @@ export function DashboardContent() {
         </main>
 
         {/* Footer */}
-        <footer className="border-t border-slate-200/60 bg-white/50 backdrop-blur-sm py-6 mt-8">
+        <footer className="border-t border-slate-200/60 dark:border-slate-800 bg-white/50 dark:bg-slate-900/50 backdrop-blur-sm py-6 mt-8">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500">
+            <div className="flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-slate-500 dark:text-slate-400">
               <p>AI Learning Tracker - Enterprise Dashboard</p>
               <p>Secure, real-time data synchronization</p>
             </div>
